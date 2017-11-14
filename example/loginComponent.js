@@ -28,8 +28,8 @@ const obj = {
 export default class LoginButton extends Component {
     render() {
         return (
-            <button>
-                Log with FB
+            <button style={this.props.fbCSS}>
+                Loggin
             </button>
         );
     }

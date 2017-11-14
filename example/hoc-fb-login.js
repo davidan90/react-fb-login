@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { string, bool, func } from 'prop-types';
+import { string, bool, object, func } from 'prop-types';
 
 const FontLink = (props) => {
     return (
@@ -10,6 +10,34 @@ const FontLink = (props) => {
     );
 }
 
+const Icon = (props) => {
+    return (
+        <i className="fa fa-facebook"></i>
+    );
+}
+
+const defaultCSS = {
+    container: {
+        backgroundColor: '#4C69BA',
+        borderRadius: '5px',
+        color: '#FFF',
+        cursor: 'pointer',
+        display: 'inline-block',
+        padding: '0.5em',
+    },
+    button: {
+        backgroundColor: '#4C69BA',
+        borderColor: '#4C69BA',
+        borderStyle: 'solid',
+        color: '#FFF',
+        cursor: 'pointer',
+        fontFamily: 'Helvetica',
+        fontWeight: 'bold',
+        textDecoration: 'none',
+        transition: 'background-color .3s, border-color .3s',
+    },
+}
+
 export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn) => {
     class LoginWrapper extends Component {
         static state = {
@@ -18,7 +46,7 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
 
         static propTypes = {
             appId: string.isRequired,
-            defaultCSS: bool,
+            fbCSS: object,
             scope: string,
             cookie: bool,
             language: string,
@@ -32,7 +60,7 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
 
         static defaultProps = {
             appId: params.appId,
-            defaultCSS: params.defaultCSS || true,
+            fbCSS: params.fbCSS || defaultCSS.button,
             scope: params.scope || 'public_profile',
             cookie: params.cookie || false,
             language: params.language || window.navigator.language,
@@ -126,18 +154,21 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
         };
 
         _getFontLink() {
-            const { defaultCSS } = this.props;
-            if (defaultCSS) {
-                return <FontLink />
+            const { fbCSS } = params;
+            if (!fbCSS) {
+                return (
+                    <span>
+                        <FontLink />
+                        <Icon />
+                    </span>
+                );
             }
         }
 
         render() {
             return (
-                <div onClick={this._click} >
-                    {
-                        this._getFontLink()
-                    }
+                <div onClick={this._click} style={defaultCSS.container}>
+                    {this._getFontLink()}
                     <LoginBtn
                         {...this.props}
                         {...this.state} />
