@@ -1,6 +1,15 @@
 import { Component } from 'react';
 import { string, bool, func } from 'prop-types';
 
+const FontLink = (props) => {
+    return (
+        <link
+            rel="stylesheet"
+            href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+        />
+    );
+}
+
 export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn) => {
     class LoginWrapper extends Component {
         static state = {
@@ -9,6 +18,7 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
 
         static propTypes = {
             appId: string.isRequired,
+            defaultCSS: bool,
             scope: string,
             cookie: bool,
             language: string,
@@ -22,6 +32,7 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
 
         static defaultProps = {
             appId: params.appId,
+            defaultCSS: params.defaultCSS || true,
             scope: params.scope || 'public_profile',
             cookie: params.cookie || false,
             language: params.language || window.navigator.language,
@@ -114,9 +125,19 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
             window.FB.login(this.checkLoginState, { scope, auth_type: params.auth_type });
         };
 
+        _getFontLink() {
+            const { defaultCSS } = this.props;
+            if (defaultCSS) {
+                return <FontLink />
+            }
+        }
+
         render() {
             return (
                 <div onClick={this._click} >
+                    {
+                        this._getFontLink()
+                    }
                     <LoginBtn
                         {...this.props}
                         {...this.state} />
