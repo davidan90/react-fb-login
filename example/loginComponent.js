@@ -1,5 +1,5 @@
-import {Component} from 'react';
-import {FBLogin} from './hoc-fb-login.js';
+import { Component } from 'react';
+import { FBLogin } from './hoc-fb-login.js';
 
 const params = {
     appId: '1661744763846761',
@@ -10,8 +10,14 @@ const params = {
     xfbml: false,
 }
 
+const onFbLoginEvent = () => {
+    const fbLoginEvent = new Event('onFbLogin');
+    document.dispatchEvent(fbLoginEvent);
+}
+
 const loggedCb = (response) => {
     console.info('Already logged: ', response);
+    onFbLoginEvent();
 };
 
 const notLoggedCb = (response) => {
@@ -29,7 +35,7 @@ export default class LoginButton extends Component {
     render() {
         return (
             <button style={this.props.fbCSS}>
-                Loggin
+                Login
             </button>
         );
     }

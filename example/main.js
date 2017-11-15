@@ -1,17 +1,30 @@
-import {Component } from 'react';
+import { Component } from 'react';
 import ReactDOM from 'react-dom';
 import LoginButton from './loginComponent';
 
+const AppContainer = () => (
+    <div>
+        <span>My App</span>
+    </div>
+);
 
 class App extends Component {
-    static state = {
-        logged: false,
+    constructor() {
+        super();
+        this.state = {
+            logged: false,
+        };
     }
-    
+
+    componentWillMount() {
+        document.addEventListener('onFbLogin', (e) => {
+           this.setState({logged: true});
+        }, false);
+    }
+
     render() {
-        return (
-            <LoginButton />
-        );
+        const {logged} = this.state;
+        return !logged ? <LoginButton /> : <AppContainer/>;
     }
 }
 
