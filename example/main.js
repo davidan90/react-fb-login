@@ -1,4 +1,19 @@
+import {Component } from 'react';
 import ReactDOM from 'react-dom';
 import LoginButton from './loginComponent';
 
-ReactDOM.render(<LoginButton/>, document.getElementById('app-root'));
+
+class App extends Component {
+    static state = {
+        logged: false,
+    }
+    
+    render() {
+        return (
+            <LoginButton />
+        );
+    }
+}
+
+
+ReactDOM.render(<App />, document.getElementById('app-root'));
