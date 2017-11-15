@@ -149,8 +149,7 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
                     return;
                 }
             }
-
-            window.FB.login(this.checkLoginState, { scope, auth_type: params.auth_type });
+            window.FB.login(loggedCb, { scope, auth_type: params.auth_type });
         };
 
         _getFontLink() {
