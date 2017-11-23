@@ -1,6 +1,6 @@
 {
   "name": "react-fb-login",
-  "version": "2.2.0",
+  "version": "2.1.2",
   "description": "React higher order component for Facebook Login",
   "keywords": [
     "react", "reactjs", "facebook", "facebook-login", "facebook-auth",

@@ -1,6 +1,38 @@
 import { Component } from 'react';
 import { string, bool, object, func } from 'prop-types';
 
+
+const defaultCSS = {
+    container: {
+        backgroundColor: '#4C69BA',
+        borderRadius: '3px',
+        color: '#FFF',
+        cursor: 'pointer',
+        display: 'inline-block',
+        padding: '0.5em',
+    },
+    button: {
+        backgroundColor: '#4C69BA',
+        borderColor: '#4C69BA',
+        borderStyle: 'solid',
+        color: '#FFF',
+        cursor: 'pointer',
+        fontFamily: 'Helvetica',
+        fontWeight: 'bold',
+        textDecoration: 'none',
+        transition: 'background-color .3s, border-color .3s'
+    },
+    icon: {
+        backgroundColor: '#FFF',
+        color: '#4C69BA',
+        height: '14px',
+        paddingTop: '2px',
+        paddingRight: '2px',
+        textAlign: 'right',
+        width: '15px',
+    }
+}
+
 const FontLink = (props) => {
     return (
         <link
@@ -12,30 +44,8 @@ const FontLink = (props) => {
 
 const Icon = (props) => {
     return (
-        <i className="fa fa-facebook"></i>
+        <i className="fa fa-facebook" style={defaultCSS.icon}></i>
     );
-}
-
-const defaultCSS = {
-    container: {
-        backgroundColor: '#4C69BA',
-        borderRadius: '3px',
-        color: '#FFF',
-        cursor: 'pointer',
-        display: 'inline-block',
-        padding: '0.5em',
-    },
-    buttonText: {
-        backgroundColor: '#4C69BA',
-        borderColor: '#4C69BA',
-        borderStyle: 'solid',
-        color: '#FFF',
-        cursor: 'pointer',
-        fontFamily: 'Helvetica',
-        fontWeight: 'bold',
-        textDecoration: 'none',
-        transition: 'background-color .3s, border-color .3s'
-    },
 }
 
 export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) => {
@@ -62,7 +72,7 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
         static defaultProps = {
             appId: params.appId,
             autoLoad: params.autoLoad || true,
-            fbCSS: params.fbCSS || defaultCSS.buttonText,
+            fbCSS: params.fbCSS || defaultCSS.button,
             scope: params.scope || 'public_profile',
             cookie: params.cookie || false,
             language: params.language || window.navigator.language,
