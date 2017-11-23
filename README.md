@@ -12,6 +12,24 @@ npm i react-fb-login
 
 ---
 
+## **Parameters**
+
+| Params        | Values        | default value  |
+| ------------- |:-------------:| :--------------:|
+| appId | string | isRequired |
+| autoLoad | boolean | true |
+| fbCSS | object | object |
+| scope | string | 'public_profile' |
+| cookie | boolean | false |
+| language | string | navigator.language |
+| redirect_uri | string | undefined |
+| version | string | 'v2.11' |
+| xfbml | boolean | false |
+| loginCb | function | isRequired |
+| notLoginCb | function | undefined |
+| clickCb | function | undefined |
+
+---
 ## **Example**
 
 ```javascript

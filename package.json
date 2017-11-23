@@ -3,8 +3,18 @@
   "version": "2.1.2",
   "description": "React higher order component for Facebook Login",
   "keywords": [
-    "react", "reactjs", "facebook", "facebook-login", "facebook-auth",
-    "decorator", "login", "component", "button", "hoc", "frontend", "js"
+    "react",
+    "reactjs",
+    "facebook",
+    "facebook-login",
+    "facebook-auth",
+    "decorator",
+    "login",
+    "component",
+    "button",
+    "hoc",
+    "frontend",
+    "js"
   ],
   "repository": {
     "type": "git",
