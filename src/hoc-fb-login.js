@@ -46,6 +46,7 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
 
         static propTypes = {
             appId: string.isRequired,
+            autoLoad: bool,
             fbCSS: object,
             scope: string,
             cookie: bool,
@@ -60,6 +61,7 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
 
         static defaultProps = {
             appId: params.appId,
+            autoLoad: params.autoLoad || true,
             fbCSS: params.fbCSS || defaultCSS.button,
             scope: params.scope || 'public_profile',
             cookie: params.cookie || false,
@@ -103,7 +105,9 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
                     version,
                 });
                 this.setState({ isSDKLoaded: true });
-                window.FB.getLoginStatus(this._checkLoginStatus);
+                if(autoLoad) {
+                    window.FB.getLoginStatus(this._checkLoginStatus);
+                }
             }
         }
 
