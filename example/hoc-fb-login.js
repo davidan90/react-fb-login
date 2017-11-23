@@ -19,13 +19,13 @@ const Icon = (props) => {
 const defaultCSS = {
     container: {
         backgroundColor: '#4C69BA',
-        borderRadius: '5px',
+        borderRadius: '3px',
         color: '#FFF',
         cursor: 'pointer',
         display: 'inline-block',
         padding: '0.5em',
     },
-    button: {
+    buttonText: {
         backgroundColor: '#4C69BA',
         borderColor: '#4C69BA',
         borderStyle: 'solid',
@@ -34,11 +34,11 @@ const defaultCSS = {
         fontFamily: 'Helvetica',
         fontWeight: 'bold',
         textDecoration: 'none',
-        transition: 'background-color .3s, border-color .3s',
+        transition: 'background-color .3s, border-color .3s'
     },
 }
 
-export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn) => {
+export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) => {
     class LoginWrapper extends Component {
         static state = {
             isSDKLoaded: false,
@@ -55,23 +55,23 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
             version: string,
             xfbml: bool,
             clickCb: func,
-            loggedCb: func,
-            notLoggedCb: func,
+            loginCb: func.isRequired,
+            notloginCb: func,
         }
 
         static defaultProps = {
             appId: params.appId,
             autoLoad: params.autoLoad || true,
-            fbCSS: params.fbCSS || defaultCSS.button,
+            fbCSS: params.fbCSS || defaultCSS.buttonText,
             scope: params.scope || 'public_profile',
             cookie: params.cookie || false,
             language: params.language || window.navigator.language,
             redirect_uri: params.uri || undefined,
-            version: params.version || 'v2.8',
+            version: params.version || 'v2.11',
             xfbml: params.xfbml || false,
+            loginCb,
+            notloginCb,
             clickCb,
-            loggedCb,
-            notLoggedCb,
         }
 
         componentWillMount() {
@@ -120,18 +120,18 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
         };
 
         _logged = (auth) => {
-            const { loggedCb } = this.props;
+            const { loginCb } = this.props;
             window.FB.api('/me', (response) => {
-                if (typeof loggedCb === 'function') {
-                    loggedCb(response);
+                if (typeof loginCb === 'function') {
+                    loginCb(response);
                 }
             });
         }
 
         _notLogged = (response) => {
-            const { notLoggedCb } = this.props;
-            if (typeof notLoggedCb === 'function') {
-                notLoggedCb(response);
+            const { notloginCb } = this.props;
+            if (typeof notloginCb === 'function') {
+                notloginCb(response);
             }
         }
 
@@ -153,7 +153,7 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
                     return;
                 }
             }
-            window.FB.login(loggedCb, { scope, auth_type: params.auth_type });
+           window.FB.login(this._checkLoginStatus, { scope, auth_type: params.auth_type });
         };
 
         _getFontLink() {
@@ -169,8 +169,9 @@ export const FBLogin = ({ params, clickCb, loggedCb, notLoggedCb }) => (LoginBtn
         }
 
         render() {
+            const containerStyle = params.fbCSS || defaultCSS.container;
             return (
-                <div onClick={this._click} style={defaultCSS.container}>
+                <div onClick={this._click} style={containerStyle}>
                     {this._getFontLink()}
                     <LoginBtn
                         {...this.props}

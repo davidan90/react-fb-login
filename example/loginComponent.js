@@ -6,7 +6,7 @@ const params = {
     scope: 'public_profile',
     cookie: false,
     language: 'en_US',
-    version: 'v2.8',
+    version: 'v2.11',
     xfbml: false,
 }
 
@@ -15,19 +15,19 @@ const onFbLoginEvent = () => {
     document.dispatchEvent(fbLoginEvent);
 }
 
-const loggedCb = (response) => {
-    console.info('Already logged: ', response);
+const loginCb = ({status}) => {
+    console.info('Already logged: ', status);
     onFbLoginEvent();
 };
 
-const notLoggedCb = (response) => {
+const notloginCb = (response) => {
     console.error('You are not logged: ', response);
 };
 
 const obj = {
     params,
-    loggedCb,
-    notLoggedCb,
+    loginCb,
+    notloginCb,
 };
 
 @FBLogin(obj)
