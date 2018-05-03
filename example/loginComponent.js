@@ -6,8 +6,8 @@ const params = {
     scope: 'public_profile',
     cookie: false,
     language: 'en_US',
-    version: 'v2.11',
-    xfbml: false,
+    version: 'v3.0',
+    xfbml: true,
 }
 
 const onFbLoginEvent = () => {
