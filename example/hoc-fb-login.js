@@ -84,13 +84,16 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
             clickCb,
         }
 
+        constructor(props) {
+            super(props)
+            this._loadFbSDK(props);
+        }
+
         componentWillMount() {
-            this._loadFbSDK();
             this._initFbLogin();
         }
 
-        _loadFbSDK() {
-            const { language } = this.props;
+        _loadFbSDK({language}) {
             ((d, s, id) => {
                 const fjs = d.getElementsByTagName(s)[0];
                 if (d.getElementById(id)) {
