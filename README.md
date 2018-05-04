@@ -33,7 +33,6 @@ npm i react-fb-login
 ## **Example**
 
 ```javascript
-
 /*********** FILE app.js ***********/
 import { Component } from 'react';
 import ReactDOM from 'react-dom';
@@ -66,44 +65,42 @@ class App extends Component {
 }
  
 ReactDOM.render(<App />, document.getElementById('app-root'));
- 
  ```
 
  ```javascript
- 
 /*********** FILE loginComponent.js ***********/
-import {Component} from 'react';
-import {FBLogin} from 'hoc-fb-login';
- 
+import React, { Component } from 'react';
+import {FBLogin} from 'react-fb-login';
+
 const params = {
-    appId: '{your_app_id}',
+    appId: 'your_facebook_app_id',
     scope: 'public_profile',
     cookie: false,
     language: 'en_US',
-    version: 'v2.8',
-    xfbml: false,
+    version: 'v3.0',
+    xfbml: true,
 }
- 
+
 const onFbLoginEvent = () => {
     const fbLoginEvent = new Event('onFbLogin');
     document.dispatchEvent(fbLoginEvent);
 }
- 
-const loggedCb = (response) => {
+
+const loginCb = (response) => {
     console.info('Already logged: ', response);
     onFbLoginEvent();
 };
- 
-const notLoggedCb = (response) => {
-    console.log('You are not logged: ', response);
+
+const notloginCb = (response) => {
+    console.error('You are not logged: ', response);
 };
- 
+
 const obj = {
     params,
-    loggedCb,
-    notLoggedCb,
+    loginCb,
+    notloginCb,
 };
- 
+
 @FBLogin(obj)
 export default class LoginButton extends Component {
     render() {
@@ -114,7 +111,6 @@ export default class LoginButton extends Component {
         );
     }
 }
-
 ```
 
 If you want to run example code:
