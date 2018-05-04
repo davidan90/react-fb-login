@@ -15,8 +15,8 @@ const onFbLoginEvent = () => {
     document.dispatchEvent(fbLoginEvent);
 }
 
-const loginCb = ({status}) => {
-    console.info('Already logged: ', status);
+const loginCb = (response) => {
+    console.info('Already logged: ', response);
     onFbLoginEvent();
 };
 
