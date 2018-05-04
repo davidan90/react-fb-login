@@ -8,6 +8,7 @@ const defaultCSS = {
         color: '#FFF',
         cursor: 'pointer',
         display: 'inline-flex',
+        alignItems: 'center',
         padding: '0.5em',
     },
     button: {
@@ -112,23 +113,21 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
 
         _loginHandler = (response) => {
             if (response.status === 'connected') {
-                this._logged(response.authResponse);
+                this._logged(response);
             } else {
                 this._notLogged(response);
             }
         };
 
-        _logged = (auth) => {
-            const { loginCb } = this.props;
+        _logged = (response) => {
             window.FB.api('/me', () => {
                 if (typeof loginCb === 'function') {
-                    loginCb(auth);
+                    loginCb(response);
                 }
             });
         }
 
         _notLogged = (response) => {
-            const { notloginCb } = this.props;
             if (typeof notloginCb === 'function') {
                 notloginCb(response);
             }

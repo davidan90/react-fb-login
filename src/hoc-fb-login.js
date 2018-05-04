@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { string, bool, object, func } from 'prop-types';
 
-
 const defaultCSS = {
     container: {
         backgroundColor: '#4C69BA',
@@ -9,6 +8,7 @@ const defaultCSS = {
         color: '#FFF',
         cursor: 'pointer',
         display: 'inline-flex',
+        alignItems: 'center',
         padding: '0.5em',
     },
     button: {
@@ -33,27 +33,17 @@ const defaultCSS = {
     }
 }
 
-const FontLink = (props) => {
-    return (
-        <link
-            rel="stylesheet"
-            href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
-        />
-    );
-}
+const FontLink = (props) => (
+    <link
+        rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+    />
+);
 
-const Icon = (props) => {
-    return (
-        <i className="fa fa-facebook" style={defaultCSS.icon}></i>
-    );
-}
+const Icon = (props) => <i className="fa fa-facebook" style={defaultCSS.icon}></i>;
 
 export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) => {
     class LoginWrapper extends Component {
-        static state = {
-            isSDKLoaded: false,
-        };
-
         static propTypes = {
             appId: string.isRequired,
             autoLoad: bool,
@@ -84,32 +74,30 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
             clickCb,
         }
 
-        constructor(props) {
-            super(props)
-            this._loadFbSDK(props);
+        state = {
+            isSDKLoaded: false,
+        };
+
+        componentDidMount() {
+            this._loadFbSDK(this.props);
+            this._initFbLogin(this.props);
         }
 
-        componentWillMount() {
-            this._initFbLogin();
-        }
-
-        _loadFbSDK({language}) {
+        _loadFbSDK({ language }) {
             ((d, s, id) => {
                 const fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {
-                    this.setState({ isSDKLoaded: true });
-                    return;
-                } else {
+                if (!d.getElementById(id)) {
                     let js = d.createElement(s);
                     js.id = id;
                     js.src = `https://connect.facebook.net/${language}/sdk.js`;
                     fjs.parentNode.insertBefore(js, fjs);
                 }
+                this.setState({ isSDKLoaded: true });
+                return;
             })(document, 'script', 'facebook-jssdk');
         }
 
-        _initFbLogin() {
-            const { appId, xfbml, cookie, version, autoLoad } = this.props;
+        _initFbLogin({ appId, xfbml, cookie, version, autoLoad }) {
             window.fbAsyncInit = () => {
                 window.FB.init({
                     appId,
@@ -117,24 +105,22 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
                     xfbml,
                     version,
                 });
-                this.setState({ isSDKLoaded: true });
                 if(autoLoad) {
-                    window.FB.getLoginStatus(this._checkLoginStatus);
+                    window.FB.getLoginStatus(this._loginHandler);
                 }
             }
         }
 
-        _checkLoginStatus = (response) => {
+        _loginHandler = (response) => {
             if (response.status === 'connected') {
-                this._logged(response.authResponse);
+                this._logged(response);
             } else {
                 this._notLogged(response);
             }
         };
 
-        _logged = (auth) => {
-            const { loginCb } = this.props;
-            window.FB.api('/me', (response) => {
+        _logged = (response) => {
+            window.FB.api('/me', () => {
                 if (typeof loginCb === 'function') {
                     loginCb(response);
                 }
@@ -142,7 +128,6 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
         }
 
         _notLogged = (response) => {
-            const { notloginCb } = this.props;
             if (typeof notloginCb === 'function') {
                 notloginCb(response);
             }
@@ -166,7 +151,7 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
                     return;
                 }
             }
-           window.FB.login(this._checkLoginStatus, { scope, auth_type: params.auth_type });
+           window.FB.login(this._loginHandler, { scope, auth_type: params.auth_type });
         };
 
         _getFontLink() {
@@ -182,8 +167,9 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
         }
 
         render() {
+            const {isSDKLoaded} = this.state;
             const containerStyle = params.fbCSS || defaultCSS.container;
-            return (
+            return !isSDKLoaded ? null : (
                 <div onClick={this._click} style={containerStyle}>
                     {this._getFontLink()}
                     <LoginBtn
