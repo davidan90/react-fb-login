@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { string, bool, object, func } from 'prop-types';
 
-
 const defaultCSS = {
     container: {
         backgroundColor: '#4C69BA',
@@ -50,10 +49,6 @@ const Icon = (props) => {
 
 export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) => {
     class LoginWrapper extends Component {
-        static state = {
-            isSDKLoaded: false,
-        };
-
         static propTypes = {
             appId: string.isRequired,
             autoLoad: bool,
@@ -84,27 +79,26 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
             clickCb,
         }
 
-        constructor(props) {
-            super(props)
-            this._loadFbSDK(props);
-        }
+        state = {
+            isSDKLoaded: false,
+        };
 
-        componentWillMount() {
+        componentDidMount() {
+            this._loadFbSDK(this.props);
             this._initFbLogin();
         }
 
         _loadFbSDK({language}) {
             ((d, s, id) => {
                 const fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {
-                    this.setState({ isSDKLoaded: true });
-                    return;
-                } else {
+                if (!d.getElementById(id)) {
                     let js = d.createElement(s);
                     js.id = id;
                     js.src = `https://connect.facebook.net/${language}/sdk.js`;
                     fjs.parentNode.insertBefore(js, fjs);
                 }
+                this.setState({ isSDKLoaded: true });
+                return;
             })(document, 'script', 'facebook-jssdk');
         }
 
@@ -117,7 +111,6 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
                     xfbml,
                     version,
                 });
-                this.setState({ isSDKLoaded: true });
                 if(autoLoad) {
                     window.FB.getLoginStatus(this._checkLoginStatus);
                 }
@@ -182,8 +175,9 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
         }
 
         render() {
+            const {isSDKLoaded} = this.state;
             const containerStyle = params.fbCSS || defaultCSS.container;
-            return (
+            return !isSDKLoaded ? null : (
                 <div onClick={this._click} style={containerStyle}>
                     {this._getFontLink()}
                     <LoginBtn
