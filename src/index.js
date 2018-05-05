@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { string, bool, object, func } from 'prop-types';
 
 const defaultCSS = {
@@ -106,33 +106,33 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
                     version,
                 });
                 if(autoLoad) {
-                    window.FB.getLoginStatus(this._loginHandler);
+                    window.FB.login(loginResponse => this._loginHandler(loginResponse), true);
                 }
             }
         }
 
-        _loginHandler = (response) => {
-            if (response.status === 'connected') {
-                this._logged(response);
+        _loginHandler = (resp) => {
+            if (resp.authResponse) {
+              this._logged(resp);
             } else {
-                this._notLogged(response);
+              this._notLogged(resp);
             }
-        };
+          };
 
-        _logged = (response) => {
-            window.FB.api('/me', () => {
+        _logged = (resp) => {
+            window.FB.api('/me', { locale: this.props.language }, (userInfo) => {
                 if (typeof loginCb === 'function') {
-                    loginCb(response);
+                    loginCb(Object.assign(userInfo, resp.authResponse));
                 }
             });
         }
 
-        _notLogged = (response) => {
+        _notLogged = (resp) => {
             if (typeof notloginCb === 'function') {
-                notloginCb(response);
+                notloginCb(resp);
             }
         }
-
+        // TODO revisar metodo 
         _click = (e) => {
             const { scope, appId, redirect_uri, clickCb } = this.props;
             const params = {
@@ -151,7 +151,7 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
                     return;
                 }
             }
-           window.FB.login(this._loginHandler, { scope, auth_type: params.auth_type });
+            window.FB.login(this._loginHandler, { scope, auth_type: params.auth_type });
         };
 
         _getFontLink() {

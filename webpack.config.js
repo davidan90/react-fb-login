@@ -1,40 +1,34 @@
 const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './example/index.html',
-  filename: 'index.html',
-  inject: 'body'
-});
-
 const ReactPluginConfig = new webpack.ProvidePlugin({
-  React: 'react',
-});
+    React: 'react',
+  });
 
-const enviroment = 'dev';
-
-const BASE_CONFIG = {
-  target: 'web',
-  entry: './example/main.js',
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify(enviroment),
-      }
-    }),
-  ],
-  node: {
-    fs: 'empty'
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: 'index.js',
+    libraryTarget: 'commonjs2'
   },
   module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'src'),
+        exclude: /(node_modules|bower_components|build)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['es2015', 'react', 'stage-0']
+          }
+        }
+      }
+    ],
     loaders: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
+        { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
+        { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
     ]
   },
-
-  plugins: [HtmlWebpackPluginConfig, ReactPluginConfig],
-}
-
-module.exports = [BASE_CONFIG];
+  plugins: [ReactPluginConfig]
+};

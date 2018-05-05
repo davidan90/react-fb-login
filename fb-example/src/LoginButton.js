@@ -1,8 +1,8 @@
-import { Component } from 'react';
-import { FBLogin } from './hoc-fb-login.js';
+import React, { Component } from 'react';
+import {FBLogin} from './react-fb-login';
 
 const params = {
-    appId: '1661744763846761',
+    appId: '1661744763846761', // replace with your facebook_app_id
     scope: 'public_profile',
     cookie: false,
     language: 'en_US',
@@ -39,5 +39,4 @@ export default class LoginButton extends Component {
             </button>
         );
     }
-
 }
