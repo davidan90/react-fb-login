@@ -2,6 +2,7 @@
   "name": "react-fb-login",
   "version": "2.2.0",
   "description": "React higher order component for Facebook Login",
+  "main": "build/index.js",
   "keywords": [
     "react",
     "reactjs",
@@ -20,6 +21,10 @@
     "type": "git",
     "url": "git+https://github.com/davidan90/react-fb-login.git"
   },
+  "bugs": {
+    "url": "https://github.com/davidan90/react-fb-login/issues"
+  },
+  "homepage": "https://github.com/davidan90/react-fb-login#readme",
   "author": {
     "name": "davidan90",
     "email": "david.mindthegap@gmail.com"
@@ -28,7 +33,6 @@
   "scripts": {
     "build": "webpack"
   },
-  "main": "build/index.js",
   "dependencies": {
     "react": "^16.0.0",
     "prop-types": "^15.6.0"
