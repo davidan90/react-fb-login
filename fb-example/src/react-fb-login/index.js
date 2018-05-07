@@ -66,7 +66,7 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
             scope: params.scope || 'public_profile',
             cookie: params.cookie || false,
             language: params.language || window.navigator.language,
-            redirect_uri: params.uri || undefined,
+            redirect_uri: params.uri || window.location.href,
             version: params.version || 'v3.0',
             xfbml: params.xfbml || true,
             loginCb,
@@ -132,26 +132,15 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
                 notloginCb(resp);
             }
         }
-        // TODO revisar metodo 
+
         _click = (e) => {
-            const { scope, appId, redirect_uri, clickCb } = this.props;
-            const params = {
-                client_id: appId,
-                state: 'facebookdirect',
-                scope,
-            };
-
-            if (redirect_uri) {
-                params.redirect_uri = redirect_uri;
-            }
-
             if (typeof clickCb === 'function') {
                 clickCb(e);
                 if (e.defaultPrevented) {
                     return;
                 }
             }
-            window.FB.login(this._loginHandler, { scope, auth_type: params.auth_type });
+            window.FB.login(this._loginHandler, { scope: this.props.scope });
         };
 
         _getFontLink() {
