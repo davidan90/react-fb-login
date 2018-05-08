@@ -22,9 +22,9 @@ npm i react-fb-login
 | scope | string | no | 'public_profile' |
 | cookie | boolean | no | false |
 | language | string | no | navigator.language |
-| redirect_uri | string | no | undefined |
+| redirect_uri | string | no | location.href |
 | version | string | no | 'v3.0' |
-| xfbml | boolean | no | true |
+| xfbml | boolean | no | false |
 | loginCb | function | yes | - |
 | notLoginCb | function | no | undefined |
 | clickCb | function | no | undefined |
