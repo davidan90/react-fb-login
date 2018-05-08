@@ -68,7 +68,7 @@ export const FBLogin = ({ params, clickCb, loginCb, notloginCb }) => (LoginBtn) 
             language: params.language || window.navigator.language,
             redirect_uri: params.uri || window.location.href,
             version: params.version || 'v3.0',
-            xfbml: params.xfbml || true,
+            xfbml: params.xfbml || false,
             loginCb,
             notloginCb,
             clickCb,
