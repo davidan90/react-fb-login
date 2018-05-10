@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
+const Uglify = require('uglifyjs-webpack-plugin')
+const UglifyPlugin = new Uglify();
 const ReactPluginConfig = new webpack.ProvidePlugin({
     React: 'react',
   });
@@ -30,5 +32,5 @@ module.exports = {
         { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
     ]
   },
-  plugins: [ReactPluginConfig]
+  plugins: [ReactPluginConfig, UglifyPlugin]
 };
